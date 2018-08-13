@@ -1,0 +1,27 @@
+{
+    "apps": [{
+        "name": "Ice",
+        "script": "server.js",
+        "env": {
+            "COMMON_VARIABLE": "true"
+        },
+        "env_production": {
+            "NODE_ENV": "production"
+        }
+
+    }],
+    "deploy": {
+        "production": {
+            "user": "root",
+            "host": ["120.79.3.108"],
+            "ref": "origin/master",
+            "repo": "git@code.aliyun.com:lxx2013/ice.git",
+            "path": "/home/www/ice/production",
+            "ssh_options": "StrictHostKeyChecking=no",
+            "pre-deploy-local": "echo 'Deploy Done!'",
+            "env": {
+                "NODE_ENV": "production"
+            }
+        }
+    }
+}
