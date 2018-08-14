@@ -1,6 +1,7 @@
 import rrouter from 'koa-router'
 import config from '../config'
 import sha1 from 'sha1'
+import { getWechat } from '../wechat'
 
 export function Router(app){
   const router = new rrouter()
@@ -24,6 +25,11 @@ export function Router(app){
   })
   router.post('/wechat-hear', (ctx, next) => {
 
+  })
+  router.get('/get_token',async (ctx,next)=>{
+      var Wechat = getWechat();
+      var token = await Wechat.getAccessToken();
+      ctx.body = JSON.stringify(Wechat,null,2)+`\n Wechat.getAccessToken:${token}`
   })
   app.use(router.routes())
   app.use(router.allowedMethods())
