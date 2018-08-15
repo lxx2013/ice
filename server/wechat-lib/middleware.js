@@ -1,6 +1,7 @@
 import sha1 from 'sha1'
 import getRawBody from 'raw-body'
 import * as util from './utils'
+import reply from '../wechat/reply'
 
 export default function (opts, reply) {
   return async function wechatMiddle(ctx, next) {
@@ -37,15 +38,21 @@ export default function (opts, reply) {
             encoding:ctx.charset
         })
         const content = await util.parseXML(data)
-        //const message = util.formatMessage(content)
+        const message = util.formatMessage(content.xml)
 
-        console.log(`content: ${JSON.stringify(content)}`)
-        ctx.weixin = {} //message
+        ctx.weixin = message
         try{
-            await reply.apply(ctx,[ctx,content,next])
+            await reply.apply(ctx,[ctx,next])
         }catch(err){
             console.log(err)
         }
+
+        const reply_msg = ctx.reply
+        const xml = util.tpl(reply_msg.Content,reply_msg)
+
+        ctx.status = 200
+        ctx.type = 'application/xml'
+        ctx.body = xml
     }
    
   }
