@@ -39,7 +39,7 @@ class Wechat {
     const now = new Date().getTime()
     const expires_in = now + (data.expires_in-20)*1000
     data.expires_in = expires_in
-    //console.log(`[updateAccessToken data]${JSON.stringify(data)}`)
+    console.log(`[request new token data]${JSON.stringify(data)}`)
     return data
   }
   isValidAccessToken(data) {
