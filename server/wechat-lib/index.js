@@ -1,5 +1,6 @@
 import request from 'request-promise'
 import formstream from 'formstream'
+import colors from 'colors'
 import _ from 'lodash'
 import {
   resolve
@@ -208,7 +209,6 @@ class Wechat {
 
   countMaterial (token) {
     const url = api.permanent.count + 'access_token=' + token
-
     return {method: 'POST', url: url}
   }
 
@@ -218,10 +218,144 @@ class Wechat {
     options.count = options.count || 10
 
     const url = api.permanent.batch + 'access_token=' + token
-
     return {method: 'POST', url: url, body: options}
   }
 
+  createTag (token, name) {
+    const form = {
+      tag: {
+        name: name
+      }
+    }
+    const url = api.tag.create + 'access_token=' + token
+    return {method: 'POST', url: url, body: form}
+  }
+
+  fetchTags (token) {
+    const url = api.tag.fetch + 'access_token=' + token
+    return {url: url}
+  }
+
+  updateTag (token, tagId, name) {
+    const form = {
+      tag: {
+        id: tagId,
+        name: name
+      }
+    }
+    const url = api.tag.update + 'access_token=' + token
+    return {method: 'POST', url: url, body: form}
+  }
+  delTag (token, tagId) {
+    const form = {
+      tag: {
+        id: tagId
+      }
+    }
+    const url = api.tag.del + 'access_token=' + token
+    return {method: 'POST', url: url, body: form}
+  }
+
+  fetchTagUsers (token, tagId, openId) {
+    const form = {
+      tagid: tagId,
+      next_openid: openId || ''
+    }
+    const url = api.tag.fetchUsers + 'access_token=' + token
+    return {method: 'POST', url: url, body: form}
+  }
+
+  // unTag true|false
+  batchTag (token, openIdList, tagId, unTag) {
+    const form = {
+      openid_list: openIdList,
+      tagid: tagId
+    }
+    let url = api.tag.batchTag
+    if (unTag) {
+      url = api.tag.batchUnTag
+    }
+    url += 'access_token=' + token
+    return {method: 'POST', url: url, body: form}
+  }
+
+  getTagList (token, openId) {
+    const form = {
+      openid: openId
+    }
+    const url = api.tag.getTagList + 'access_token=' + token
+    return {method: 'POST', url: url, body: form}
+  }
+
+  remarkUser (token, openId, remark) {
+    const form = {
+      openid: openId,
+      remark: remark
+    }
+    const url = api.user.remark + 'access_token=' + token
+    return {method: 'POST', url: url, body: form}
+  }
+
+  getUserInfo (token, openId, lang) {
+    const url = `${api.user.info}access_token=${token}&openid=${openId}&lang=${lang || 'zh_CN'}`
+    return {url: url}
+  }
+
+  batchUserInfo (token, userList) {
+    const url = api.user.batchInfo + 'access_token=' + token
+    const form = {
+      user_list: userList
+    }
+    return {method: 'POST', url: url, body: form}
+  }
+
+  fetchUserList (token, openId) {
+    const url = `${api.user.fetchUserList}access_token=${token}&next_openid=${openId || ''}`
+    console.log('url'.red,url)
+    return {url: url}
+  }
+
+  createMenu (token, menu) {
+    const url = api.menu.create + 'access_token=' + token
+    return {method: 'POST', url: url, body: menu}
+  }
+
+  getMenu (token) {
+    const url = api.menu.get + 'access_token=' + token
+    return {url: url}
+  }
+
+  delMenu (token) {
+    const url = api.menu.del + 'access_token=' + token
+    return {url: url}
+  }
+
+  addConditionMenu (token, menu, rule) {
+    const url = api.menu.addCondition + 'access_token=' + token
+    const form = {
+      button: menu,
+      matchrule: rule
+    }
+    return {method: 'POST', url: url, body: form}
+  }
+
+  delConditionMenu (token, menuId) {
+    const url = api.menu.delCondition + 'access_token=' + token
+    const form = {
+      menuid: menuId
+    }
+
+    return {method: 'POST', url: url, body: form}
+  }
+
+  getCurrentMenuInfo (token) {
+    const url = api.menu.getInfo + 'access_token=' + token
+    return {url: url}
+  }
+
+  sign (ticket, url) {
+    return sign(ticket, url)
+  }
 }
 
 export default Wechat

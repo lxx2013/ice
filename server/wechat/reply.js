@@ -2,11 +2,23 @@ import colors from 'colors'
 const tip = 'Welcome to reply.js\n'
 
 export default async (ctx,content,next)=>{
-    
+    let client = require('../wechat').getWechat()
     const message = ctx.weixin
     console.log(message)
     if(message.MsgType == 'text'){
-        ctx.reply = { content: message.Content}
+        if(client[message.Content] ){
+            var  data = {}
+            try{
+                data =  await client.handle(message.Content)
+            }catch(err){
+                console.log(err)
+            }
+            console.log('data'.green,data)
+            ctx.reply = { content:JSON.stringify(data,null,2)}
+        }
+        else{
+            ctx.reply = { content: message.Content}
+        }
     }else if(message.MsgType == 'image'){
         ctx.reply = {
             msgType:message.MsgType,
