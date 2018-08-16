@@ -48,7 +48,7 @@ export default function (opts, reply) {
         }
 
         const reply_msg = ctx.reply
-        const xml = util.tpl(reply_msg.Content,reply_msg)
+        const xml = util.tpl(reply_msg,message)
 
         ctx.status = 200
         ctx.type = 'application/xml'

@@ -8,7 +8,7 @@ const tpl = `
 <MsgType><![CDATA[<%= msgType %>]]></MsgType>
 
 <% if(msgType === 'text') { %>
-    <Content><![CDATA[<%- content %>]]></Content>
+    <Content><![CDATA[<%- content.content %>]]></Content>
 <% } else if (msgType === 'image' ) { %>
     <Image><MediaId><![CDATA[<%= content.mediaId %>]]></MediaId></Image>
 <% } else if (msgType === 'voice' ) { %>
