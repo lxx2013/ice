@@ -58,6 +58,7 @@ TokenSchema.statics = {
     await token.save()
     return data
   }
+  uploadMaterial(token,type,material,permanent)
 }
 
 const Token = mongoose.model('Token', TokenSchema)

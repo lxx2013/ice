@@ -42,6 +42,11 @@ export default async (ctx,content,next)=>{
         }else if (message.Event == 'unsubscribe'){
             console.log('哼竟然真的抛弃了人家'.red)
             ctx.reply = { content: ''}
+        }else if (message.Event =='LOCATION'){
+            ctx.reply = {
+                msgType: 'text',
+                content: `经度:${message.Location_Y}纬度:${message.Location_X}`
+            }
         }
     }else{
         ctx.reply = { content: '目前支持:\n1.复读机: \n\t文字 \n\t图片 \n\t语音 \n\t链接标题\n2.定位解析经纬度'}
