@@ -1,10 +1,10 @@
-import colors from 'colors'
+import colors, { bgYellow } from 'colors'
 const tip = 'Welcome to reply.js\n'
 
 export default async (ctx,content,next)=>{
     let client = require('../wechat').getWechat()
     const message = ctx.weixin
-    console.log(message)
+    console.log('reply.js:7 () message]:\n'.bgYellow,message)
     if(message.MsgType == 'text'){
         if(client[message.Content] ){
             var  data = {}
@@ -59,6 +59,51 @@ export default async (ctx,content,next)=>{
                 msgType: 'text',
                 content: `经度:${message.Location_Y}纬度:${message.Location_X}`
             }
+        }else if(message.Event == 'CLICK'){
+            if(message.EventKey == '11'){
+                var data = "最新种子接口还没写"
+                ctx.reply = { content:JSON.stringify(data,null,2)}
+            }else if(message.EventKey == '31'){
+                var  data = {}
+                try{
+                    data =  await client.handle('fetchUserList')
+                }catch(err){
+                    console.log(err)
+                }
+                console.log('data'.green,data)
+                ctx.reply = { content:JSON.stringify(data,null,2)}
+            }else if(message.EventKey == '32'){
+                var  data = {}
+                try{
+                    data =  await client.handle('getMenu')
+                }catch(err){
+                    console.log(err)
+                }
+                console.log('data'.green,data)
+                ctx.reply = { content:JSON.stringify(data,null,2)}
+            }else if(message.EventKey == '33'){
+                var  data = {}
+                try{
+                    data =  await client.handle('delMenu')
+                }catch(err){
+                    console.log(err)
+                }
+                console.log('data'.green,data)
+                ctx.reply = { content:JSON.stringify(data,null,2)}
+            }else if(message.EventKey == '34'){
+                var  data = {}
+                try{
+                    data =  await client.handle('createMenu')
+                }catch(err){
+                    console.log(err)
+                }
+                console.log('data'.green,data)
+                ctx.reply = { content:JSON.stringify(data,null,2)}
+            }
+        }else if(message.Event == 'scancode_waitmsg'){
+            ctx.reply = { content:JSON.stringify(message,null,2)}
+        }else if(message.Event == 'scancode_push'){
+            ctx.reply = { content:JSON.stringify(message,null,2)}
         }
     }else{
         ctx.reply = { content: '目前支持:\n1.复读机: \n\t文字 \n\t图片 \n\t语音 \n\t链接标题\n2.定位解析经纬度'}

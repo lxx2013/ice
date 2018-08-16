@@ -1,6 +1,7 @@
 import xml2js from 'xml2js'
 import template from './tpl'
 import { ifError } from 'assert';
+import colors from 'colors'
 
 function parseXML(xml) {
   return new Promise((resolve, reject) => {
@@ -30,7 +31,7 @@ function formatMessage(result) {
       if (item.length === 1) {
         let val = item[0]
         if (typeof val === 'object') {
-          message[key] = formatMessage(value)
+          message[key] = formatMessage(val)
         } else {
           message[key] = (val || '').trim()
         }
@@ -42,8 +43,8 @@ function formatMessage(result) {
       }
     }
   }
-  console.log('result: ', result)
-  console.log('\nmessage: ', message)
+  console.log('[utils.js:46 formatMessage result:]\n'.bgYellow, result)
+  //console.log('\nmessage: ', message)
   return message
 }
 
@@ -67,9 +68,9 @@ function tpl(content, message) {
     toUserName: message.FromUserName,
     fromUserName: message.ToUserName,
   })
-  console.log('content: ', content)
-  console.log('\nmessage: ', message)
-  console.log('\ninfo ', info)
+  console.log('[utils.js tpl:71 content]:\n'.bgYellow, content)
+  console.log('[utils.js tpl:71 message]:\n'.bgYellow, message)
+  console.log('[utils.js tpl:71 info]:\n'.bgYellow, info)
   return template(info)
 }
 export {

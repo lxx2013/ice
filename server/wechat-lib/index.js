@@ -122,10 +122,15 @@ class Wechat {
   }
   async handle (operation, ...args) {
     const tokenData = await this.fetchAccessToken()
-    const options = this[operation](tokenData.access_token, ...args)
-    const data = await this.request(options)
-    console.log('\n handle data',data)
-    return data
+    const options = await this[operation](tokenData.access_token, ...args)
+    if(options.url){
+        const data = await this.request(options)
+        console.log('\n handle data',data)
+        return data
+    }else{
+        return options
+    }
+    
   }
 
   uploadMaterial(token, type, material, permanent) {
@@ -317,6 +322,7 @@ class Wechat {
 
   createMenu (token, menu) {
     const url = api.menu.create + 'access_token=' + token
+    var menu = menu || require('./menu').default
     return {method: 'POST', url: url, body: menu}
   }
 
