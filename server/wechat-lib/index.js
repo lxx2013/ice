@@ -6,6 +6,7 @@ import {
   resolve
 } from '../../node_modules/any-promise';
 import fs from 'fs'
+import {sign } from './utils'
 
 const base = 'https://api.weixin.qq.com/cgi-bin/'
 const api = {
@@ -71,7 +72,8 @@ class Wechat {
     this.appSecret = opts.appSecret
     this.getAccessToken = opts.getAccessToken
     this.saveAccessToken = opts.saveAccessToken
-
+    this.getAccessTicket = opts.getAccessTicket
+    this.saveAccessTicket = opts.saveAccessTicket
     this.fetchAccessToken()
   }
   async request(options) {
@@ -89,7 +91,7 @@ class Wechat {
   }
   async fetchAccessToken() {
     var data = await this.getAccessToken()
-    if (!this.isValidAccessToken(data)) {
+    if (!this.isValidAccessToken(data,'access_token')) {
       data = await this.updateAccessToken()
     }
     //console.log(`[fetchAccessToken data]${JSON.stringify(data)}`)
@@ -107,8 +109,8 @@ class Wechat {
     console.log(`[request new token data]${JSON.stringify(data)}`)
     return data
   }
-  isValidAccessToken(data) {
-    if (!data || !data.access_token || !data.expires_in) {
+  isValidAccessToken(data,name) {
+    if (!data || !data[name] || !data.expires_in) {
       return false;
     }
     const expires_in = data.expires_in
@@ -119,6 +121,26 @@ class Wechat {
     } else {
       return false;
     }
+  }
+  async fetchAccessTicket() {
+    var data = await this.getAccessTicket()
+    if (!this.isValidAccessToken(data,'access_ticket')) {
+      data = await this.updateAccessTicket()
+    }
+    //console.log(`[fetchAccessToken data]${JSON.stringify(data)}`)
+    await this.saveAccessTicket(data)
+    return data
+  }
+  async updateAccessTicket(token) {
+    const url = api.ticket.get + `&access_token=${token}&type=jsapi`
+    const data = await this.request({
+      url: url
+    })
+    const now = new Date().getTime()
+    const expires_in = now + (data.expires_in - 20) * 1000
+    data.expires_in = expires_in
+    console.log(`[request new ticket data]${JSON.stringify(data)}`)
+    return data
   }
   async handle (operation, ...args) {
     const tokenData = await this.fetchAccessToken()

@@ -11,7 +11,9 @@ const wechatConfig = {
         appSecret : config.wechat.appSecret,
         token:config.wechat.token,
         getAccessToken: async ()=>await Token.getAccessToken(),
-        saveAccessToken: async (data)=> await Token.saveAccessToken(data)
+        saveAccessToken: async (data)=> await Token.saveAccessToken(data),
+        getAccessTicket: async ()=>await Ticket.getAccessTicket(),
+        saveAccessTicket: async (data)=> await Ticket.saveAccessTicket(data),
     }
 }
 
