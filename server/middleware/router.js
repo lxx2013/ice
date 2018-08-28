@@ -4,13 +4,15 @@ import { getWechat } from '../wechat'
 import reply from '../wechat/reply'
 import wechatMiddle from '../wechat-lib/middleware'
 import { resolve } from 'path';
-import { signature } from '../controllers/wechat'
+import { signature, redirect, oauth }from '../controllers/wechat'
 
 export function Router(app){
   const router = new rrouter()
   //.all 相当于 get | post
   router.all('/wechat-hear', wechatMiddle(config.wechat,reply))
   router.get('/wechat-signature',signature)
+  router.get('/wechat-redirect',redirect)
+  router.get('/wechat-oauth',oauth)
   router.get('/get_token',async (ctx,next)=>{
       var Wechat = getWechat();
       var token = await Wechat.getAccessToken();
