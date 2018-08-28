@@ -14,3 +14,6 @@ var message = util.formatMessage(result)
 it('should what',()=>{
     console.log(util.tpl(message.Content,message))
 })
+it('should sign',()=>{
+    console.log(util.sign('test','test'))
+})

@@ -2,6 +2,7 @@ import xml2js from 'xml2js'
 import template from './tpl'
 import { ifError } from 'assert';
 import colors from 'colors'
+import sha1 from 'sha1'
 
 function parseXML(xml) {
   return new Promise((resolve, reject) => {
@@ -109,7 +110,7 @@ function signIt (nonce, ticket, timestamp, url) {
 
   const string = raw(ret)
   const sha = sha1(string)
-
+  console.log('\nstring,sha'.bgRed,string,sha)
   return sha
 }
 
@@ -117,14 +118,15 @@ function sign (ticket, url) {
   const nonce = createNonce()
   const timestamp = createTimestamp()
   const signature = signIt(nonce, ticket, timestamp, url)
-
-  return {
+  const ret = {
     noncestr: nonce,
     timestamp: timestamp,
     signature: signature
   }
+  console.log('\n\nret,url:'.bgRed,ret,'\nurl:',url)
+  return  ret
 }
-export default{
+export {
   formatMessage,
   parseXML,
   tpl,

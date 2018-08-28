@@ -4,7 +4,7 @@ import Wechat from '../wechat-lib'
 import { AsyncSubject } from 'rx';
 
 const Token = mongoose.model('Token')
-
+const Ticket = mongoose.model('Ticket')
 const wechatConfig = {
     wechat :{
         appID: config.wechat.appID,

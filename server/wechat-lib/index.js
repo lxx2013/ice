@@ -6,7 +6,7 @@ import {
   resolve
 } from '../../node_modules/any-promise';
 import fs from 'fs'
-import {sign } from './utils'
+import { sign } from './utils'
 
 const base = 'https://api.weixin.qq.com/cgi-bin/'
 const api = {
@@ -122,10 +122,10 @@ class Wechat {
       return false;
     }
   }
-  async fetchAccessTicket() {
+  async fetchAccessTicket(token) {
     var data = await this.getAccessTicket()
     if (!this.isValidAccessToken(data,'access_ticket')) {
-      data = await this.updateAccessTicket()
+      data = await this.updateAccessTicket(token)
     }
     //console.log(`[fetchAccessToken data]${JSON.stringify(data)}`)
     await this.saveAccessTicket(data)

@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const TicketSchema = new mongoose.Schema({
   name: String, //global ticket
-  access_ticket: String,
+  ticket: String,
   expires_in: Number,
   meta: {
     createdAt: {
@@ -28,7 +28,7 @@ TicketSchema.pre('save', function (next) {
 TicketSchema.statics = {
   async getAccessTicket() {
     const ticket = await this.findOne({
-      name: 'access_ticket',
+      name: 'ticket',
     }).exec()
     //下面三行目测一点卵用都没有
     if(ticket && !ticket.ticket){
@@ -39,7 +39,7 @@ TicketSchema.statics = {
   },
   async saveAccessTicket(data) {
     let ticket = await this.findOne({
-      name: 'access_ticket',
+      name: 'ticket',
     }).exec()
     //console.log(`\n ticket ${ticket} data:${data.access_ticket}\n`)
     if (ticket) {
@@ -48,8 +48,8 @@ TicketSchema.statics = {
       //console.log(`\n[1 saveAccessTicket ticket]${JSON.stringify(ticket)}`)
     } else {
       ticket = new Ticket({
-        name: 'access_ticket',
-        ticket: data.access_ticket,
+        name: 'ticket',
+        ticket: data.ticket,
         expires_in: data.expires_in
       })
       //console.log(`\n[2 saveAccessTicket ticket]${JSON.stringify(ticket)}`)
