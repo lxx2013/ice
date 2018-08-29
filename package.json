@@ -26,10 +26,13 @@
     "lodash": "^4.17.10",
     "mongoose": "^5.2.8",
     "nuxt": "latest",
+    "pug": "^2.0.3",
+    "qiniu": "^7.2.1",
     "raw-body": "^2.3.3",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
     "sha1": "^1.1.1",
+    "shelljs": "^0.8.2",
     "source-map-support": "^0.4.15",
     "xml2js": "^0.4.19"
   },
@@ -38,6 +41,7 @@
     "babel-preset-latest-node": "^1.0.0",
     "babel-preset-stage-3": "^6.24.1",
     "backpack-core": "^0.3.0",
+    "cheerio": "^1.0.0-rc.2",
     "eslint": "^3.13.1",
     "eslint-config-standard": "^10.2.1",
     "eslint-loader": "^1.9.0",
@@ -48,6 +52,7 @@
     "eslint-plugin-standard": "^3.0.1",
     "esm": "^3.0.76",
     "nodemon": "^1.11.0",
+    "request-promise": "^4.2.2",
     "scmp": "^2.0.0"
   }
 }
